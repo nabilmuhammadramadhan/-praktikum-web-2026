@@ -10,7 +10,6 @@
 - Uji coba Laragon MySQL berjalan pada Port 3306.
 - Konfigurasi identitas Git global.
 ### Spesifikasi Perangkat
-- sistem operas windows
 - Microsoft Windows [Version 10.0.26200.9457]
 (c) Microsoft Corporation. All rights reserved.
 
