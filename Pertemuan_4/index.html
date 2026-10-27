@@ -1,67 +1,300 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Dashboard Portofolio Proyek - Modul 4</title>
- <style>
- * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, sans-serif; }
- body { background-color: #f1f5f9; color: #0f172a; padding: 30px 15px; }
- .container { max-width: 800px; margin: 0 auto; background: #ffffff; border-radius: 12px; padding: 25px;
-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
- h1 { color: #1e3a8a; font-size: 24px; margin-bottom: 5px; }
- p.subtitle { color: #64748b; margin-bottom: 20px; font-size: 14px; }
- .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;
-margin-bottom: 25px; }
- .stat-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; textalign: center; }
- .stat-card h3 { font-size: 13px; color: #64748b; text-transform: uppercase; margin-bottom: 5px; }
- .stat-card p { font-size: 20px; font-weight: bold; color: #1e3a8a; }
- .filter-group { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
- .btn-filter { padding: 8px 16px; border: 1px solid #cbd5e1; background: #ffffff; border-radius: 6px;
-cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s; }
- .btn-filter.active, .btn-filter:hover { background: #1e3a8a; color: #ffffff; border-color: #1e3a8a; }
- .project-card { border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-bottom: 12px;
-display: flex; justify-content: space-between; align-items: center; background: #ffffff; transition: transform
-0.15s ease; }
- .project-card:hover { transform: translateY(-2px); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
- .project-info h4 { font-size: 16px; color: #0f172a; margin-bottom: 4px; }
- .project-category { display: inline-block; font-size: 12px; color: #0284c7; background: #e0f2fe; padding:
-2px 8px; border-radius: 4px; margin-bottom: 6px; font-weight: 600; }
- .project-budget { font-size: 14px; color: #334155; font-weight: 600; }
- .badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
- .badge-success { background: #dcfce7; color: #166534; }
- .badge-pending { background: #fef9c3; color: #854d0e; }
- </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Portofolio Proyek - Modul 4 Terpadu</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, sans-serif; }
+        body { background-color: #f1f5f9; color: #0f172a; padding: 30px 15px; }
+        .container { max-width: 800px; margin: 0 auto; background: #ffffff; border-radius: 12px; padding: 25px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        h1 { color: #1e3a8a; font-size: 24px; margin-bottom: 5px; }
+        p.subtitle { color: #64748b; margin-bottom: 20px; font-size: 14px; }
+        
+        /* Statistik */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .stat-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; text-align: center; }
+        .stat-card h3 { font-size: 13px; color: #64748b; text-transform: uppercase; margin-bottom: 5px; }
+        .stat-card p { font-size: 20px; font-weight: bold; color: #1e3a8a; }
+        
+        /* Form & Search */
+        .form-section, .search-section { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
+        .form-section h3, .search-section h3 { font-size: 16px; margin-bottom: 12px; color: #1e3a8a; }
+        .input-group { margin-bottom: 12px; }
+        .input-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; color: #334155; }
+        input[type="text"], input[type="number"], select { width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
+        input[type="text"]:focus, input[type="number"]:focus, select:focus { outline: none; border-color: #1e3a8a; box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.1); }
+        .checkbox-group { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: #334155; margin-bottom: 15px; cursor: pointer; }
+        .btn-submit { background: #1e3a8a; color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600; width: 100%; transition: background 0.2s; }
+        .btn-submit:hover { background: #172554; }
+
+        /* Filter */
+        .filter-group { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .btn-filter { padding: 8px 16px; border: 1px solid #cbd5e1; background: #ffffff; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s; }
+        .btn-filter.active, .btn-filter:hover { background: #1e3a8a; color: #ffffff; border-color: #1e3a8a; }
+        
+        /* Proyek Card */
+        .project-card { border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; background: #ffffff; transition: transform 0.15s ease; flex-wrap: wrap; gap: 10px; }
+        .project-card:hover { transform: translateY(-2px); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .project-info { flex: 1; min-width: 200px; }
+        .project-info h4 { font-size: 16px; color: #0f172a; margin-bottom: 4px; }
+        .project-category { display: inline-block; font-size: 12px; color: #0284c7; background: #e0f2fe; padding: 2px 8px; border-radius: 4px; margin-bottom: 6px; font-weight: 600; }
+        .project-budget { font-size: 14px; color: #334155; font-weight: 600; margin-top: 4px; }
+        
+        /* Badge & Aksi */
+        .project-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; text-align: center; }
+        .badge-success { background: #dcfce7; color: #166534; }
+        .badge-pending { background: #fef9c3; color: #854d0e; }
+        
+        .action-buttons { display: flex; gap: 8px; }
+        .btn-action { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; transition: opacity 0.2s; }
+        .btn-action:hover { opacity: 0.8; }
+        .btn-toggle { background: #e2e8f0; color: #334155; }
+        .btn-delete { background: #fee2e2; color: #991b1b; }
+    </style>
 </head>
 <body>
- <div class="container">
- <h1>Portofolio Proyek</h1>
- <p class="subtitle">Modul 4: Pengolahan Logika Data & Interaktivitas DOM</p>
- <!-- Kartu Ringkasan Statistik -->
- <div class="stats-grid">
- <div class="stat-card">
- <h3>Total Proyek</h3>
- <p id="stat-total-projects">0</p>
- </div>
- <div class="stat-card">
- <h3>Total Anggaran</h3>
- <p id="stat-total-budget">Rp 0</p>
- </div>
- <div class="stat-card">
- <h3>Selesai Dikerjakan</h3>
- <p id="stat-completed-projects">0</p>
- </div>
- </div>
- <!-- Tombol Filter Kategori -->
- <div class="filter-group">
- <button class="btn-filter active" data-category="Semua">Semua Proyek</button>
- <button class="btn-filter" data-category="Web App">Web App</button>
- <button class="btn-filter" data-category="Desktop App">Desktop App</button>
- <button class="btn-filter" data-category="Mobile App">Mobile App</button>
- </div>
- <!-- Kontainer Daftar Proyek -->
- <div id="project-list"></div>
- </div>
- <script src="main.js"></script>
+    <div class="container">
+        <h1>Portofolio Proyek</h1>
+        <p class="subtitle">Modul 4: Pengolahan Logika Data & Interaktivitas DOM</p>
+
+        <!-- Kartu Ringkasan Statistik -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Proyek</h3>
+                <p id="stat-total-projects">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Anggaran</h3>
+                <p id="stat-total-budget">Rp 0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Selesai Dikerjakan</h3>
+                <p id="stat-completed-projects">0</p>
+            </div>
+        </div>
+
+        <!-- FITUR 1: Formulir Input Proyek Dinamis -->
+        <div class="form-section">
+            <h3>Tambah Proyek Baru</h3>
+            <form id="project-form">
+                <div class="input-group">
+                    <label for="input-title">Judul Proyek</label>
+                    <input type="text" id="input-title" placeholder="Contoh: Sistem Informasi Akademik" />
+                </div>
+                <div class="input-group">
+                    <label for="input-category">Kategori</label>
+                    <select id="input-category">
+                        <option value="Web App">Web App</option>
+                        <option value="Mobile App">Mobile App</option>
+                        <option value="Desktop App">Desktop App</option>
+                        <option value="UI/UX Design">UI/UX Design</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="input-budget">Estimasi Anggaran (Rp)</label>
+                    <input type="number" id="input-budget" placeholder="Contoh: 5000000" />
+                </div>
+                <label class="checkbox-group">
+                    <input type="checkbox" id="input-completed" />
+                    Tandai jika proyek sudah selesai
+                </label>
+                <button type="submit" class="btn-submit">Simpan Proyek</button>
+            </form>
+        </div>
+
+        <!-- FITUR 2: Pencarian Real-Time (Live Search) -->
+        <div class="search-section">
+            <h3>Cari Proyek</h3>
+            <input type="text" id="search-input" placeholder="Ketik nama proyek untuk mencari..." />
+        </div>
+
+        <!-- Tombol Filter Kategori -->
+        <div class="filter-group" id="filter-container">
+            <button class="btn-filter active" data-category="Semua">Semua Proyek</button>
+            <button class="btn-filter" data-category="Web App">Web App</button>
+            <button class="btn-filter" data-category="Desktop App">Desktop App</button>
+            <button class="btn-filter" data-category="Mobile App">Mobile App</button>
+            <button class="btn-filter" data-category="UI/UX Design">UI/UX Design</button>
+        </div>
+
+        <!-- Kontainer Daftar Proyek -->
+        <div id="project-list"></div>
+    </div>
+
+    <script>
+        // Inisialisasi Data Proyek (Menggunakan 'let' agar bisa dimodifikasi)
+        let projects = [
+            { id: 1, title: "Sistem Inventaris Keuangan", category: "Web App", budget: 2500000, completed: true },
+            { id: 2, title: "Sistem Kasir Digital POS", category: "Desktop App", budget: 5000000, completed: true },
+            { id: 3, title: "Landing Page Profil Perusahaan", category: "Web App", budget: 1500000, completed: false },
+            { id: 4, title: "Aplikasi Presensi GPS Mobile", category: "Mobile App", budget: 4500000, completed: false }
+        ];
+
+        // State untuk Filter & Pencarian
+        let currentCategory = "Semua";
+        let searchQuery = "";
+
+        // Fungsi Format Rupiah
+        const formatRupiah = (angka) => {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                maximumFractionDigits: 0
+            }).format(angka);
+        };
+
+        // Fungsi Update Statistik
+        const updateStats = () => {
+            // Statistik dihitung dari KESELURUHAN array projects
+            const totalProjects = projects.length;
+            const totalBudget = projects.reduce((acc, curr) => acc + curr.budget, 0);
+            const completedCount = projects.filter(item => item.completed).length;
+            
+            document.getElementById("stat-total-projects").textContent = totalProjects;
+            document.getElementById("stat-total-budget").textContent = formatRupiah(totalBudget);
+            document.getElementById("stat-completed-projects").textContent = completedCount;
+        };
+
+        // Fungsi Render Proyek
+        const renderProjects = () => {
+            const container = document.getElementById("project-list");
+            
+            // Proses Filter Kategori
+            let filteredList = currentCategory === "Semua" 
+                ? projects 
+                : projects.filter(p => p.category === currentCategory);
+
+            // Proses Filter Pencarian Real-Time (Fitur 2)
+            if (searchQuery.trim() !== "") {
+                filteredList = filteredList.filter(p => 
+                    p.title.toLowerCase().includes(searchQuery.toLowerCase())
+                );
+            }
+
+            // Render ke DOM
+            if (filteredList.length === 0) {
+                container.innerHTML = "<p style='text-align: center; color: #64748b; padding: 20px;'>Tidak ada proyek yang sesuai.</p>";
+            } else {
+                const htmlString = filteredList.map(proj => {
+                    const badgeClass = proj.completed ? "badge-success" : "badge-pending";
+                    const statusText = proj.completed ? "Selesai" : "Dalam Pengerjaan";
+                    const toggleText = proj.completed ? "Batal Selesai" : "Tandai Selesai";
+                    
+                    return `
+                    <div class="project-card">
+                        <div class="project-info">
+                            <span class="project-category">${proj.category}</span>
+                            <h4>${proj.title}</h4>
+                            <p class="project-budget">${formatRupiah(proj.budget)}</p>
+                        </div>
+                        <div class="project-actions">
+                            <span class="badge ${badgeClass}">${statusText}</span>
+                            <!-- FITUR 3: Tombol Aksi -->
+                            <div class="action-buttons">
+                                <button class="btn-action btn-toggle" data-id="${proj.id}">${toggleText}</button>
+                                <button class="btn-action btn-delete" data-id="${proj.id}">Hapus</button>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                }).join("");
+                container.innerHTML = htmlString;
+            }
+
+            // Selalu update statistik setiap kali render ulang
+            updateStats();
+        };
+
+        // Event Listener Utama saat dokumen dimuat
+        document.addEventListener("DOMContentLoaded", () => {
+            renderProjects(); // Render awal
+
+            // Event untuk Filter Kategori
+            const filterButtons = document.querySelectorAll(".btn-filter");
+            filterButtons.forEach(btn => {
+                btn.addEventListener("click", (e) => {
+                    filterButtons.forEach(b => b.classList.remove("active"));
+                    e.target.classList.add("active");
+                    currentCategory = e.target.getAttribute("data-category");
+                    renderProjects();
+                });
+            });
+
+            // FITUR 1: Event Submit pada Form
+            const projectForm = document.getElementById("project-form");
+            projectForm.addEventListener("submit", (e) => {
+                e.preventDefault(); // Cegah reload halaman
+
+                // Ambil nilai dari input
+                const title = document.getElementById("input-title").value.trim();
+                const category = document.getElementById("input-category").value;
+                const budget = parseFloat(document.getElementById("input-budget").value);
+                const completed = document.getElementById("input-completed").checked;
+
+                // Validasi Input
+                if (!title) {
+                    alert("Judul proyek tidak boleh kosong!");
+                    return;
+                }
+                if (isNaN(budget) || budget <= 0) {
+                    alert("Estimasi anggaran harus lebih besar dari 0!");
+                    return;
+                }
+
+                // Buat Objek Baru
+                const newProject = {
+                    id: Date.now(),
+                    title: title,
+                    category: category,
+                    budget: budget,
+                    completed: completed
+                };
+
+                // Masukkan ke array menggunakan Spread Operator
+                projects = [...projects, newProject];
+
+                // Reset form dan Render ulang
+                projectForm.reset();
+                renderProjects();
+            });
+
+            // FITUR 2: Event Input pada Pencarian Real-Time
+            const searchInput = document.getElementById("search-input");
+            searchInput.addEventListener("input", (e) => {
+                searchQuery = e.target.value;
+                renderProjects();
+            });
+
+            // FITUR 3: Event Delegation untuk Aksi Interaktif (Toggle Status & Hapus)
+            const projectListContainer = document.getElementById("project-list");
+            projectListContainer.addEventListener("click", (e) => {
+                
+                // Jika tombol Ubah Status ditekan
+                if (e.target.classList.contains("btn-toggle")) {
+                    const idToToggle = parseInt(e.target.getAttribute("data-id"));
+                    // Cari index proyek dan ubah boolean completed-nya
+                    const projectIndex = projects.findIndex(p => p.id === idToToggle);
+                    if (projectIndex !== -1) {
+                        projects[projectIndex].completed = !projects[projectIndex].completed;
+                        renderProjects(); // Render ulang agar UI dan Statistik terupdate
+                    }
+                }
+
+                // Jika tombol Hapus ditekan
+                if (e.target.classList.contains("btn-delete")) {
+                    const idToDelete = parseInt(e.target.getAttribute("data-id"));
+                    const konfirmasi = confirm("Apakah Anda yakin ingin menghapus proyek ini?");
+                    
+                    if (konfirmasi) {
+                        // Filter array dengan membuang id yang dipilih
+                        projects = projects.filter(p => p.id !== idToDelete);
+                        renderProjects(); // Render ulang agar UI dan Statistik terupdate
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
